@@ -1,19 +1,17 @@
 function Filters({ categories, onFilter }) {
   return (
-    <div>
+    <div className="filters">
       <h4>Categories</h4>
 
-      {categories.map((cat) => (
-        <button
-          key={cat}
-          onClick={() => onFilter(cat)}
-          style={{ margin: "5px" }}
-        >
-          {cat}
-        </button>
-      ))}
+      <div className="filters__list">
+        {categories.map((cat) => (
+          <button key={cat} className="btn" onClick={() => onFilter(cat)}>
+            {cat}
+          </button>
+        ))}
+      </div>
     </div>
-  )
+  );
 }
 
-export default Filters
+export default Filters;

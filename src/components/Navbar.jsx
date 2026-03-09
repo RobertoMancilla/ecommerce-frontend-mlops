@@ -1,23 +1,21 @@
-import { Link } from "react-router-dom"
+import { Link } from "react-router-dom";
+import { useCart } from "../context/CartContext";
 
 function Navbar() {
-  return (
-    <nav style={{
-      display: "flex",
-      justifyContent: "space-between",
-      padding: "16px",
-      borderBottom: "1px solid #ddd"
-    }}>
-      <h2>Ecommerce</h2>
+  const { itemCount } = useCart();
 
-      <div style={{ display: "flex", gap: "20px" }}>
-        <Link to="/">Home</Link>
-        <Link to="/products">Products</Link>
-        <Link to="/cart">Cart</Link>
+  return (
+    <nav className="navbar">
+      <h2 className="navbar__brand">Ecommerce</h2>
+
+      <div className="navbar__links">
+        <Link to="/">Catalog</Link>
+        <Link to="/cart">Cart ({itemCount})</Link>
+        <Link to="/checkout">Checkout</Link>
         <Link to="/orders">Orders</Link>
       </div>
     </nav>
-  )
+  );
 }
 
-export default Navbar
+export default Navbar;

@@ -1,20 +1,41 @@
-function CartItem({ item, onRemove }) {
+function CartItem({ item, onRemove, onQuantityChange }) {
   return (
-    <div style={{
-      display: "flex",
-      justifyContent: "space-between",
-      borderBottom: "1px solid #ddd",
-      padding: "10px"
-    }}>
-      <span>{item.name}</span>
+    <article className="cart-item">
+      <div className="cart-item__info">
+        <img className="cart-item__image" src={item.imageUrl} alt={item.name} />
+        <div>
+          <h3>{item.name}</h3>
+          <p>${item.price.toFixed(2)} each</p>
+        </div>
+      </div>
 
-      <span>${item.price}</span>
+      <div className="cart-item__actions">
+        <div className="qty-control">
+          <button className="btn" onClick={() => onQuantityChange(item.id, item.quantity - 1)}>
+            -
+          </button>
 
-      <button onClick={() => onRemove(item.id)}>
-        Remove
-      </button>
-    </div>
-  )
+          <input
+            type="number"
+            min="1"
+            max={item.stock}
+            value={item.quantity}
+            onChange={(e) => onQuantityChange(item.id, e.target.value)}
+          />
+
+          <button className="btn" onClick={() => onQuantityChange(item.id, item.quantity + 1)}>
+            +
+          </button>
+        </div>
+
+        <strong>${(item.price * item.quantity).toFixed(2)}</strong>
+
+        <button className="btn btn-danger" onClick={() => onRemove(item.id)}>
+          Remove
+        </button>
+      </div>
+    </article>
+  );
 }
 
-export default CartItem
+export default CartItem;

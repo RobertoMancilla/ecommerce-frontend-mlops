@@ -1,15 +1,15 @@
-import { useState } from "react"
+import { useState } from "react";
 
 function SearchBar({ onSearch }) {
-  const [query, setQuery] = useState("")
+  const [query, setQuery] = useState("");
 
   const handleSearch = (e) => {
-    e.preventDefault()
-    onSearch(query)
-  }
+    e.preventDefault();
+    onSearch(query.trim());
+  };
 
   return (
-    <form onSubmit={handleSearch}>
+    <form className="search-bar" onSubmit={handleSearch}>
       <input
         type="text"
         placeholder="Search products..."
@@ -17,9 +17,11 @@ function SearchBar({ onSearch }) {
         onChange={(e) => setQuery(e.target.value)}
       />
 
-      <button type="submit">Search</button>
+      <button className="btn" type="submit">
+        Search
+      </button>
     </form>
-  )
+  );
 }
 
-export default SearchBar
+export default SearchBar;
