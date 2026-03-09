@@ -1,0 +1,31 @@
+.catalog-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px;
+  font-family: system-ui, -apple-system, sans-serif; /* Fixes the Times New Roman font */
+}
+
+.catalog-header {
+  text-align: center;
+  color: #333333;
+  margin-bottom: 24px;
+}
+
+.catalog-controls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #F5F5F5; /* Surface color */
+  padding: 24px;
+  border-radius: 8px;
+  margin-bottom: 32px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.catalog-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 32px; /* THIS is what adds the space between products */
+  width: 100%;
+}
