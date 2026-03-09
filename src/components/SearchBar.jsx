@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import "./SearchBar.css";
 
 function SearchBar({ onSearch }) {
   const [input, setInput] = useState('');
@@ -9,38 +10,17 @@ function SearchBar({ onSearch }) {
   };
 
   return (
-    <form onSubmit={handleSubmit} style={{ 
-      display: 'flex', 
-      gap: '8px', 
-      width: '100%', /* Forces it to be wide */
-      maxWidth: '800px' /* Prevents it from being TOO ridiculously wide on giant screens */
-    }}>
+    <form className="search-bar-container" onSubmit={handleSubmit}>
       <input 
         type="text" 
-        placeholder="Search products..." 
+        className="search-input"
+        placeholder="Search for products..." 
         value={input}
         onChange={(e) => setInput(e.target.value)}
-        style={{
-          flexGrow: 1, /* Makes the input box take all remaining space */
-          padding: '12px 16px',
-          borderRadius: '4px',
-          border: '1px solid #DDDDDD',
-          fontSize: '1rem',
-          outline: 'none'
-        }}
       />
       <button 
         type="submit"
-        style={{
-          padding: '0 24px',
-          backgroundColor: '#333333',
-          color: '#FFFFFF',
-          border: 'none',
-          borderRadius: '4px',
-          cursor: 'pointer',
-          fontWeight: 'bold',
-          fontSize: '1rem'
-        }}
+        className="search-button"
       >
         Search
       </button>

@@ -1,10 +1,8 @@
+import "./ErrorMessage.css";
+
 function ErrorMessage({ message }) {
   return (
-    <div style={{
-      color: "red",
-      padding: "10px",
-      border: "1px solid red"
-    }}>
+    <div className="error-message">
       {message}
     </div>
   )

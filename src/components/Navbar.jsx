@@ -1,20 +1,25 @@
-import { Link } from "react-router-dom"
+import { Link, useLocation } from "react-router-dom"
+import "./Navbar.css"
 
 function Navbar() {
-  return (
-    <nav style={{
-      display: "flex",
-      justifyContent: "space-between",
-      padding: "16px",
-      borderBottom: "1px solid #ddd"
-    }}>
-      <h2>Ecommerce</h2>
+  const location = useLocation();
 
-      <div style={{ display: "flex", gap: "20px" }}>
-        <Link to="/">Home</Link>
-        <Link to="/products">Products</Link>
-        <Link to="/cart">Cart</Link>
-        <Link to="/orders">Orders</Link>
+  const isActive = (path) => {
+    return location.pathname === path ? "navbar-link active" : "navbar-link";
+  };
+
+  return (
+    <nav className="navbar">
+      <div className="container navbar-container">
+        <Link to="/" className="navbar-logo">
+          Market
+        </Link>
+
+        <div className="navbar-links">
+          <Link to="/" className={isActive("/")}>Home</Link>
+          <Link to="/cart" className={isActive("/cart")}>Cart</Link>
+          <Link to="/orders" className={isActive("/orders")}>Orders</Link>
+        </div>
       </div>
     </nav>
   )

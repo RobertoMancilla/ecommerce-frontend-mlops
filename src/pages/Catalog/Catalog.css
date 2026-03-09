@@ -1,31 +1,74 @@
+.catalog-subheader {
+  background-color: var(--white);
+  border-bottom: 1px solid var(--border-color);
+  padding: var(--spacing-md) 0;
+  position: sticky;
+  top: 72px; /* Adjusted slightly for better alignment */
+  z-index: 50;
+  display: flex;
+  justify-content: center;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
+}
+
+@media (max-width: 640px) {
+  .catalog-subheader {
+    top: 104px; /* Account for stacked navbar on mobile */
+  }
+}
+
 .catalog-container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 24px;
-  font-family: system-ui, -apple-system, sans-serif; /* Fixes the Times New Roman font */
+  padding: 0 var(--spacing-lg) var(--spacing-2xl);
 }
 
 .catalog-header {
   text-align: center;
-  color: #333333;
-  margin-bottom: 24px;
+  color: var(--primary-color);
+  margin: var(--spacing-2xl) 0;
+  font-size: 3rem;
 }
 
 .catalog-controls {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  background-color: #F5F5F5; /* Surface color */
-  padding: 24px;
-  border-radius: 8px;
-  margin-bottom: 32px;
-  width: 100%;
-  box-sizing: border-box;
+  gap: var(--spacing-md);
+  padding: var(--spacing-lg);
+  margin-bottom: var(--spacing-2xl);
+  border: 1px solid var(--border-color);
+  transition: all var(--transition-normal);
+}
+
+.catalog-controls:hover {
+  border-color: var(--primary-color);
+}
+
+@media (min-width: 768px) {
+  .catalog-controls {
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+  }
 }
 
 .catalog-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 32px; /* THIS is what adds the space between products */
+  gap: var(--spacing-xl);
   width: 100%;
+}
+
+@media (max-width: 480px) {
+  .catalog-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.empty-state {
+  text-align: center;
+  padding: var(--spacing-2xl);
+  border: 1px dashed var(--border-color);
+  margin-top: var(--spacing-xl);
+  color: var(--text-muted);
+  font-style: italic;
 }

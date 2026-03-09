@@ -1,15 +1,18 @@
+import "./OrderCard.css";
+
 function OrderCard({ order }) {
+  const statusClass = `status-${order.status.toLowerCase()}`;
+
   return (
-    <div style={{
-      border: "1px solid #ddd",
-      padding: "16px",
-      marginBottom: "10px"
-    }}>
-      <p><strong>Order ID:</strong> {order.id}</p>
+    <div className="order-card">
+      <div className="order-card-header">
+        <span className="order-id">Order #{order.id}</span>
+        <span className={`order-status ${statusClass}`}>{order.status}</span>
+      </div>
 
-      <p><strong>Total:</strong> ${order.total}</p>
-
-      <p><strong>Status:</strong> {order.status}</p>
+      <div className="order-card-body">
+        <p className="order-total">Total: ${order.total.toFixed(2)}</p>
+      </div>
     </div>
   )
 }

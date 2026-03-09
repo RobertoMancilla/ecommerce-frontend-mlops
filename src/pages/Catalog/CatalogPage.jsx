@@ -23,7 +23,8 @@ function CatalogPage() {
       try {
         const fetchedProducts = await getProducts(searchTerm, selectedCategory);
         setProducts(fetchedProducts);
-        setCategories(await getProductCategories());
+        const cats = await getProductCategories();
+        setCategories(cats);
       } catch (err) {
         setError("Error loading catalog");
       } finally {
@@ -38,43 +39,51 @@ function CatalogPage() {
   };
 
   return (
-    <div className="catalog-container">
-      <h1 className="catalog-header">
-        {selectedCategory === 'All' ? 'Product Catalog' : `${selectedCategory} Products`}
-      </h1>
-
-      <div className="catalog-controls">
-        <SearchBar onSearch={setSearchTerm} />
-        <Filters 
-          categories={categories} 
-          onFilter={(cat) => setSelectedCategory(cat)} 
-          selectedCategory={selectedCategory}
-        />
+    <>
+      <div className="catalog-subheader">
+        <div className="container">
+          <Filters 
+            categories={categories} 
+            onFilter={(cat) => setSelectedCategory(cat)} 
+            selectedCategory={selectedCategory}
+          />
+        </div>
       </div>
 
-      {loading && <Loading />}
-      {error && <ErrorMessage message={error} />}
+      <div className="catalog-container">
+        <h1 className="catalog-header">
+          {selectedCategory === 'All' ? 'Product Catalog' : `${selectedCategory} Products`}
+        </h1>
 
-      {!loading && !error && products.length === 0 && (
-        <p style={{ textAlign: "center", fontSize: "1.2rem", color: "#333333" }}>No products found matching your criteria.</p>
-      )}
+        <div className="catalog-controls">
+          <SearchBar onSearch={setSearchTerm} />
+        </div>
 
-      <div className="catalog-grid">
-        {!loading && !error && products.map(product => (
-          /* textDecoration: 'none' and color: 'inherit' fixes the blue underline issue */
-          <Link 
-            key={product.id} 
-            to={`/product/${product.id}`} 
-            style={{ textDecoration: 'none', color: 'inherit' }}
-          >
-            <ProductCard 
-              product={product} 
-              onAddToCart={handleAddToCart} 
-            />
-          </Link>
-        ))}
+        {loading && <Loading />}
+        {error && <ErrorMessage message={error} />}
+
+        {!loading && !error && products.length === 0 && (
+          <div className="empty-state">
+            <p style={{ fontSize: "1.2rem", color: "var(--text-muted)" }}>No products found matching your criteria.</p>
+          </div>
+        )}
+
+        <div className="catalog-grid">
+          {!loading && !error && products.map(product => (
+            <Link 
+              key={product.id} 
+              to={`/product/${product.id}`} 
+              style={{ textDecoration: 'none', color: 'inherit' }}
+            >
+              <ProductCard 
+                product={product} 
+                onAddToCart={handleAddToCart} 
+              />
+            </Link>
+          ))}
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 

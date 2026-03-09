@@ -1,0 +1,102 @@
+.product-card {
+  background-color: var(--white);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: var(--spacing-md);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  transition: all var(--transition-normal);
+  cursor: pointer;
+  overflow: hidden;
+  position: relative;
+}
+
+.product-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: 1px solid var(--primary-color);
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+  pointer-events: none;
+}
+
+.product-card:hover {
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-4px);
+}
+
+.product-card:hover::after {
+  opacity: 1;
+}
+
+.product-card-image-wrapper {
+  width: 100%;
+  height: 240px;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  margin-bottom: var(--spacing-md);
+  border: 1px solid var(--bg-surface);
+}
+
+.product-card-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--transition-normal);
+}
+
+.product-card:hover .product-card-image {
+  transform: scale(1.05);
+}
+
+.product-card-info {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.product-card-name {
+  margin: 0 0 var(--spacing-sm) 0;
+  color: var(--primary-color);
+  font-size: 1.15rem;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.product-card-price {
+  font-weight: 700;
+  font-size: 1.25rem;
+  color: var(--secondary-color);
+  margin-top: auto;
+  margin-bottom: var(--spacing-md);
+}
+
+.product-card-button {
+  width: 100%;
+  padding: 12px;
+  background-color: var(--primary-color);
+  color: var(--white);
+  border: 1px solid var(--primary-color);
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  font-size: 0.8rem;
+  transition: all var(--transition-fast);
+}
+
+.product-card-button:hover {
+  background-color: var(--white);
+  color: var(--primary-color);
+}
+
+@media (max-width: 640px) {
+  .product-card-image-wrapper {
+    height: 180px;
+  }
+}

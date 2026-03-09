@@ -1,5 +1,10 @@
 function OrdersPage() {
-  return <h1>Orders Page</h1>;
+  return (
+    <div className="page-container">
+      <h1 className="page-header">Orders</h1>
+      {/* Rest of the orders implementation would go here */}
+    </div>
+  );
 }
 
 export default OrdersPage;
