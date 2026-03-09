@@ -1,76 +1,91 @@
-import { useEffect, useState } from "react";
-import Filters from "../../components/Filters";
-import Loading from "../../components/Loading";
-import ErrorMessage from "../../components/ErrorMessage";
-import ProductCard from "../../components/ProductCard";
-import SearchBar from "../../components/SearchBar";
+import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { getProducts, getProductCategories } from '../../services/productsService';
+import ProductCard from '../../components/ProductCard';
+import Filters from '../../components/Filters';
+import SearchBar from '../../components/SearchBar';
+import Loading from '../../components/Loading';
+import ErrorMessage from '../../components/ErrorMessage';
 import { useCart } from "../../context/CartContext";
-import { getProductCategories, getProducts } from "../../services/productsService";
-import "./Catalog.css";
+import './Catalog.css';
 
 function CatalogPage() {
   const [products, setProducts] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [category, setCategory] = useState("All");
+  const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
-
+  const [error, setError] = useState(null);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('All');
   const { addToCart } = useCart();
 
-  const categories = getProductCategories();
-
   useEffect(() => {
-    let active = true;
-
-    const loadProducts = async () => {
+    const fetchData = async () => {
+      setLoading(true);
+      setError(null);
       try {
-        setLoading(true);
-        setError("");
-        const data = await getProducts(searchTerm, category);
-        if (active) {
-          setProducts(data);
-        }
-      } catch {
-        if (active) {
-          setError("Failed to load products.");
-        }
+        const fetchedProducts = await getProducts(searchTerm, selectedCategory);
+        setProducts(fetchedProducts);
+        const cats = await getProductCategories();
+        setCategories(cats);
+      } catch (err) {
+        setError("Error loading catalog");
       } finally {
-        if (active) {
-          setLoading(false);
-        }
+        setLoading(false);
       }
     };
+    fetchData();
+  }, [searchTerm, selectedCategory]);
 
-    loadProducts();
-
-    return () => {
-      active = false;
-    };
-  }, [searchTerm, category]);
+  const handleAddToCart = (product) => {
+    addToCart(product);
+  };
 
   return (
-    <section className="catalog-page container">
-      <header className="catalog-page__header">
-        <h1>Product Catalog</h1>
-        <p>Find products and add them to your cart.</p>
-      </header>
-
-      <div className="catalog-page__toolbar">
-        <SearchBar onSearch={setSearchTerm} />
-        <Filters categories={categories} onFilter={setCategory} />
+    <>
+      <div className="catalog-subheader">
+        <div className="container">
+          <Filters 
+            categories={categories} 
+            onFilter={(cat) => setSelectedCategory(cat)} 
+            selectedCategory={selectedCategory}
+          />
+        </div>
       </div>
 
-      {loading && <Loading />}
-      {error && <ErrorMessage message={error} />}
+      <div className="catalog-container">
+        <h1 className="catalog-header">
+          {selectedCategory === 'All' ? 'Product Catalog' : `${selectedCategory} Products`}
+        </h1>
 
-      {!loading && !error && (
-        <div className="product-grid">
-          {products.map((product) => (
-            <ProductCard key={product.id} product={product} onAddToCart={addToCart} />
+        <div className="catalog-controls">
+          <SearchBar onSearch={setSearchTerm} />
+        </div>
+
+        {loading && <Loading />}
+        {error && <ErrorMessage message={error} />}
+
+        {!loading && !error && products.length === 0 && (
+          <div className="empty-state">
+            <p style={{ fontSize: "1.2rem", color: "var(--text-muted)" }}>No products found matching your criteria.</p>
+          </div>
+        )}
+
+        <div className="catalog-grid">
+          {!loading && !error && products.map(product => (
+            <Link 
+              key={product.id} 
+              to={`/product/${product.id}`} 
+              style={{ textDecoration: 'none', color: 'inherit' }}
+            >
+              <ProductCard 
+                product={product} 
+                onAddToCart={handleAddToCart} 
+              />
+            </Link>
           ))}
         </div>
-      )}
-    </section>
+      </div>
+    </>
   );
 }
 

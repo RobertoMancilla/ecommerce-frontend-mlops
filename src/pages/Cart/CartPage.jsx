@@ -1,69 +1,70 @@
 import { Link } from "react-router-dom";
-import CartItem from "../../components/CartItem";
 import { useCart } from "../../context/CartContext";
+import CartItem from "../../components/CartItem";
 import "./Cart.css";
 
 function CartPage() {
   const {
     cartItems,
-    removeFromCart,
-    updateQuantity,
+    itemCount,
     subtotal,
     shipping,
     total,
+    removeFromCart,
+    updateQuantity,
     clearCart,
   } = useCart();
 
-  if (cartItems.length === 0) {
-    return (
-      <section className="cart-page container">
-        <h1>Your cart is empty</h1>
-        <Link className="btn btn-primary" to="/">
-          Continue shopping
-        </Link>
-      </section>
-    );
-  }
-
   return (
-    <section className="cart-page container">
-      <h1>Shopping Cart</h1>
+    <section className="page-container cart-page">
+      <h1 className="page-header">Shopping Cart</h1>
 
-      <div className="cart-layout">
-        <div className="cart-items">
-          {cartItems.map((item) => (
-            <CartItem
-              key={item.id}
-              item={item}
-              onRemove={removeFromCart}
-              onQuantityChange={updateQuantity}
-            />
-          ))}
+      {cartItems.length === 0 ? (
+        <div className="cart-empty">
+          <p>Your cart is empty.</p>
+          <Link to="/" className="cart-link-btn">Continue shopping</Link>
         </div>
+      ) : (
+        <div className="cart-layout">
+          <div className="cart-items">
+            {cartItems.map((item) => (
+              <CartItem
+                key={item.id}
+                item={item}
+                onRemove={removeFromCart}
+                onUpdateQuantity={updateQuantity}
+              />
+            ))}
+          </div>
 
-        <aside className="cart-summary">
-          <h2>Order summary</h2>
-          <p>
-            <span>Subtotal</span>
-            <strong>${subtotal.toFixed(2)}</strong>
-          </p>
-          <p>
-            <span>Shipping</span>
-            <strong>${shipping.toFixed(2)}</strong>
-          </p>
-          <p className="cart-summary__total">
-            <span>Total</span>
-            <strong>${total.toFixed(2)}</strong>
-          </p>
+          <aside className="cart-summary">
+            <h2>Order Summary</h2>
+            <p>
+              <span>Items</span>
+              <strong>{itemCount}</strong>
+            </p>
+            <p>
+              <span>Subtotal</span>
+              <strong>${subtotal.toFixed(2)}</strong>
+            </p>
+            <p>
+              <span>Shipping</span>
+              <strong>${shipping.toFixed(2)}</strong>
+            </p>
+            <p className="cart-summary__total">
+              <span>Total</span>
+              <strong>${total.toFixed(2)}</strong>
+            </p>
 
-          <Link className="btn btn-primary" to="/checkout">
-            Go to checkout
-          </Link>
-          <button className="btn btn-danger" onClick={clearCart}>
-            Clear cart
-          </button>
-        </aside>
-      </div>
+            <div className="cart-summary-actions">
+              <Link to="/checkout" className="cart-link-btn">Go to checkout</Link>
+              <button type="button" className="cart-clear-btn" onClick={clearCart}>
+                Clear cart
+              </button>
+            </div>
+          </aside>
+        </div>
+      )}
     </section>
   );
 }

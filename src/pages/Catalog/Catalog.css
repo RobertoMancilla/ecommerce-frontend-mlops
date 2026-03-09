@@ -1,70 +1,74 @@
-.catalog-page {
-  display: grid;
-  gap: 18px;
-}
-
-.catalog-page__header {
-  display: grid;
-  gap: 6px;
-}
-
-.catalog-page__header p {
-  color: #6b7280;
-}
-
-.catalog-page__toolbar {
+.catalog-subheader {
+  background-color: var(--white);
+  border-bottom: 1px solid var(--border-color);
+  padding: var(--spacing-md) 0;
+  position: sticky;
+  top: 72px; /* Adjusted slightly for better alignment */
+  z-index: 50;
   display: flex;
-  justify-content: space-between;
-  gap: 12px;
-  flex-wrap: wrap;
-  background: #ffffff;
-  border: 1px solid #e5e7eb;
-  border-radius: 12px;
-  padding: 12px;
-}
-
-.product-grid {
-  display: grid;
-  gap: 14px;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-}
-
-.product-card {
-  background: #ffffff;
-  border-radius: 12px;
-  border: 1px solid #e5e7eb;
-  padding: 14px;
-  display: grid;
-  gap: 8px;
-}
-
-.product-card__image {
-  width: 100%;
-  height: 180px;
-  object-fit: cover;
-  border-radius: 8px;
-}
-
-.product-card__title {
-  font-size: 1rem;
-}
-
-.product-card__category {
-  font-size: 0.82rem;
-  color: #6b7280;
-}
-
-.product-card__price {
-  font-weight: 700;
-  margin-bottom: 8px;
+  justify-content: center;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
 }
 
 @media (max-width: 640px) {
-  .catalog-page__toolbar {
-    display: grid;
+  .catalog-subheader {
+    top: 104px; /* Account for stacked navbar on mobile */
   }
+}
 
-  .search-bar {
-    width: 100%;
+.catalog-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--spacing-lg) var(--spacing-2xl);
+}
+
+.catalog-header {
+  text-align: center;
+  color: var(--primary-color);
+  margin: var(--spacing-2xl) 0;
+  font-size: 3rem;
+}
+
+.catalog-controls {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  padding: var(--spacing-lg);
+  margin-bottom: var(--spacing-2xl);
+  border: 1px solid var(--border-color);
+  transition: all var(--transition-normal);
+}
+
+.catalog-controls:hover {
+  border-color: var(--primary-color);
+}
+
+@media (min-width: 768px) {
+  .catalog-controls {
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
   }
+}
+
+.catalog-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--spacing-xl);
+  width: 100%;
+}
+
+@media (max-width: 480px) {
+  .catalog-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.empty-state {
+  text-align: center;
+  padding: var(--spacing-2xl);
+  border: 1px dashed var(--border-color);
+  margin-top: var(--spacing-xl);
+  color: var(--text-muted);
+  font-style: italic;
 }

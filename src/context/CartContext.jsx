@@ -23,7 +23,7 @@ export function CartProvider({ children }) {
           id: product.id,
           name: product.name,
           price: product.price,
-          imageUrl: product.imageUrl,
+          imageUrl: product.imageUrl || product.image,
           stock: product.stock ?? 99,
           quantity: 1,
         },

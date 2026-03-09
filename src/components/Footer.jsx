@@ -1,9 +1,13 @@
+import "./Footer.css";
+
 function Footer() {
   return (
     <footer className="footer">
-      <p>(c) 2026 Ecommerce Project</p>
+      <div className="container">
+        <p>© 2026 Market. All rights reserved.</p>
+      </div>
     </footer>
-  );
+  )
 }
 
-export default Footer;
+export default Footer

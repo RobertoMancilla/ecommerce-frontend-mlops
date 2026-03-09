@@ -1,17 +1,22 @@
-function Filters({ categories, onFilter }) {
-  return (
-    <div className="filters">
-      <h4>Categories</h4>
+import "./Filters.css";
 
-      <div className="filters__list">
-        {categories.map((cat) => (
-          <button key={cat} className="btn" onClick={() => onFilter(cat)}>
+function Filters({ categories, onFilter, selectedCategory }) {
+  return (
+    <div className="filters-container">
+      {categories.map((cat) => {
+        const isActive = selectedCategory === cat;
+        return (
+          <button
+            key={cat}
+            onClick={() => onFilter(cat)}
+            className={`filter-button ${isActive ? 'active' : ''}`}
+          >
             {cat}
           </button>
-        ))}
-      </div>
+        );
+      })}
     </div>
-  );
+  )
 }
 
-export default Filters;
+export default Filters
