@@ -6,6 +6,7 @@ import Filters from '../../components/Filters';
 import SearchBar from '../../components/SearchBar';
 import Loading from '../../components/Loading';
 import ErrorMessage from '../../components/ErrorMessage';
+import { useCart } from "../../context/CartContext";
 import './Catalog.css';
 
 function CatalogPage() {
@@ -15,6 +16,7 @@ function CatalogPage() {
   const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
+  const { addToCart } = useCart();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -35,7 +37,7 @@ function CatalogPage() {
   }, [searchTerm, selectedCategory]);
 
   const handleAddToCart = (product) => {
-    console.log("Added to cart:", product.name);
+    addToCart(product);
   };
 
   return (

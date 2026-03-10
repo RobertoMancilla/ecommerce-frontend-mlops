@@ -1,3 +1,5 @@
+import api from "./api";
+
 const mockOrders = [
   {
     id: "1001",
@@ -57,22 +59,87 @@ const mockOrders = [
     status: "CANCELLED",
     total: 99.0,
     createdAt: "2026-03-05T18:20:00",
-    items: [{ productId: "5", name: "Webcam 4K HD", quantity: 1, price: 99.0 }],
+    items: [
+      {
+        productId: "5",
+        name: "Webcam 4K HD",
+        quantity: 1,
+        price: 99.0,
+      },
+    ],
   },
 ];
 
+const sortByDateDesc = (a, b) => new Date(b.createdAt) - new Date(a.createdAt);
+
+const shouldUseFallback = (error) => !error?.response;
+
+const mapApiOrder = (order) => ({
+  ...order,
+  items: (order.items || []).map((item) => ({
+    ...item,
+    price: item.price ?? item.unitPrice ?? 0,
+  })),
+});
+
 export const getOrders = async () => {
-  await new Promise((resolve) => setTimeout(resolve, 400));
-  return [...mockOrders].sort(
-    (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
-  );
+  try {
+    const response = await api.get("/orders");
+    const orders = Array.isArray(response.data) ? response.data : [];
+    return orders.map(mapApiOrder).sort(sortByDateDesc);
+  } catch (error) {
+    if (!shouldUseFallback(error)) {
+      throw error;
+    }
+    await new Promise((resolve) => setTimeout(resolve, 400));
+    return [...mockOrders].sort(sortByDateDesc);
+  }
 };
 
 export const getOrderById = async (id) => {
-  await new Promise((resolve) => setTimeout(resolve, 300));
-  const order = mockOrders.find((order) => order.id === id);
-  if (!order) {
-    throw new Error("Order not found");
+  try {
+    const response = await api.get(`/orders/${id}`);
+    return mapApiOrder(response.data);
+  } catch (error) {
+    if (!shouldUseFallback(error)) {
+      throw error;
+    }
+    await new Promise((resolve) => setTimeout(resolve, 300));
+    const order = mockOrders.find((mockOrder) => mockOrder.id === id);
+
+    if (!order) {
+      throw new Error("Order not found");
+    }
+
+    return order;
   }
-  return order;
+};
+
+export const createOrder = async (payload) => {
+  try {
+    const response = await api.post("/orders", payload);
+    return response.data;
+  } catch (error) {
+    if (!shouldUseFallback(error)) {
+      throw error;
+    }
+
+    await new Promise((resolve) => setTimeout(resolve, 450));
+
+    const newOrder = {
+      id: String(1000 + mockOrders.length + 1),
+      status: "PENDING",
+      total: payload.summary?.total ?? 0,
+      createdAt: new Date().toISOString(),
+      items: (payload.items || []).map((item) => ({
+        productId: item.productId,
+        name: item.name,
+        quantity: item.quantity,
+        price: item.unitPrice ?? item.price ?? 0,
+      })),
+    };
+
+    mockOrders.unshift(newOrder);
+    return newOrder;
+  }
 };

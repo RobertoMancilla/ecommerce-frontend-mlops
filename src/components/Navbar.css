@@ -32,6 +32,9 @@
   font-size: 0.9rem;
   text-transform: uppercase;
   letter-spacing: 1px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .navbar-link:hover {
@@ -42,6 +45,19 @@
   color: var(--primary-color);
   border-bottom: 2px solid var(--primary-color);
   padding-bottom: 2px;
+}
+
+.cart-badge {
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 999px;
+  background: var(--primary-color);
+  color: var(--white);
+  font-size: 0.7rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 @media (max-width: 640px) {
