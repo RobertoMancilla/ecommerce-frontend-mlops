@@ -1,5 +1,3 @@
-import api from "./api";
-
 const mockOrders = [
   {
     id: "1001",
