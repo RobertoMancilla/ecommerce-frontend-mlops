@@ -8,8 +8,8 @@ phases:
       - npm install
   build:
     commands:
-      - npm run build
+      - VITE_PRODUCTS_API_URL=https://kjgte52mpef3z47rok5fkxiszu0mmlnj.lambda-url.us-east-1.on.aws VITE_ORDERS_API_URL=https://csh5ml7howdgg4ogo5ewsjth3i0hmqys.lambda-url.us-east-1.on.aws npm run build
 artifacts:
   base-directory: dist
   files:
-    - '**/*'
+    - "**/*"
