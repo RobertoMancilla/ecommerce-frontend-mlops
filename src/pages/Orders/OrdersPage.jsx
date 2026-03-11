@@ -7,38 +7,40 @@ import { Link } from "react-router-dom";
 import "./Orders.css";
 
 function OrdersPage() {
-
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-
   const loadOrders = async () => {
     try {
       setLoading(true);
+      setError(null);
+
       const data = await getOrders();
-      setOrders(data);
+
+      if (Array.isArray(data)) {
+        setOrders(data);
+      } else {
+        setOrders([]);
+      }
     } catch (err) {
+      console.error(err);
       setError("Failed to load orders");
     } finally {
       setLoading(false);
     }
   };
 
-
   useEffect(() => {
     loadOrders();
   }, []);
-
 
   if (loading) return <Loading />;
 
   if (error) return <ErrorMessage message={error} />;
 
-
   return (
     <div className="page-container">
-
       <h1 className="page-header">My Orders</h1>
 
       <button className="refresh-btn" onClick={loadOrders}>
@@ -50,21 +52,20 @@ function OrdersPage() {
       )}
 
       <div className="orders-grid">
+        {orders.map((order) => {
+          const orderId = order.id || order.order_id;
 
-        {orders.map(order => (
-
-          <Link
-            key={order.id}
-            to={`/orders/${order.id}`}
-            className="order-link"
-          >
-            <OrderCard order={order} />
-          </Link>
-
-        ))}
-
+          return (
+            <Link
+              key={orderId}
+              to={`/orders/${orderId}`}
+              className="order-link"
+            >
+              <OrderCard order={order} />
+            </Link>
+          );
+        })}
       </div>
-
     </div>
   );
 }

@@ -1,20 +1,30 @@
 import "./OrderCard.css";
 
 function OrderCard({ order }) {
-  const statusClass = `status-${order.status.toLowerCase()}`;
+  if (!order) return null;
+
+  const orderId = order.id || order.order_id || "N/A";
+  const status = order.status || "pending";
+  const total = Number(order.total || 0);
+
+  const statusClass = `status-${status.toLowerCase()}`;
 
   return (
     <div className="order-card">
       <div className="order-card-header">
-        <span className="order-id">Order #{order.id}</span>
-        <span className={`order-status ${statusClass}`}>{order.status}</span>
+        <span className="order-id">Order #{orderId}</span>
+        <span className={`order-status ${statusClass}`}>
+          {status}
+        </span>
       </div>
 
       <div className="order-card-body">
-        <p className="order-total">Total: ${order.total.toFixed(2)}</p>
+        <p className="order-total">Total: ${total.toFixed(2)}</p>
       </div>
     </div>
-  )
+  );
 }
 
-export default OrderCard
+export default OrderCard;
+
+

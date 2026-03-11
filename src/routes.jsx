@@ -6,12 +6,34 @@ import OrdersPage from "./pages/Orders/OrdersPage";
 import OrderDetailPage from "./pages/Orders/OrderDetailPage";
 
 const routes = [
-  { path: "/", element: <CatalogPage /> },
-  { path: "/product/:id", element: <ProductDetailPage /> },
-  { path: "/cart", element: <CartPage /> },
-  { path: "/checkout", element: <CheckoutPage /> },
-  { path: "/orders", element: <OrdersPage /> },
-  { path: "/orders/:id", element: <OrderDetailPage /> }
+  {
+    path: "/",
+    element: <CatalogPage />
+  },
+  {
+    path: "/product/:id",
+    element: <ProductDetailPage />
+  },
+  {
+    path: "/cart",
+    element: <CartPage />
+  },
+  {
+    path: "/checkout",
+    element: <CheckoutPage />
+  },
+  {
+    path: "/orders",
+    element: <OrdersPage />
+  },
+  {
+    path: "/orders/:id",
+    element: <OrderDetailPage />
+  },
+  {
+    path: "*",
+    element: <CatalogPage />
+  }
 ];
 
 export default routes;

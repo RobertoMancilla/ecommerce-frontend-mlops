@@ -1,106 +1,81 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { getOrderById } from "../../services/ordersService";
+import { getOrders } from "../../services/ordersService";
+import OrderCard from "../../components/OrderCard";
 import Loading from "../../components/Loading";
 import ErrorMessage from "../../components/ErrorMessage";
+import { Link } from "react-router-dom";
 import "./Orders.css";
 
-function OrderDetailPage() {
-
-  const { id } = useParams();
-
-  const [order, setOrder] = useState(null);
+function OrdersPage() {
+  const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-
-  const loadOrder = async () => {
+  const loadOrders = async () => {
     try {
-
       setLoading(true);
+      setError(null);
 
-      const data = await getOrderById(id);
+      const data = await getOrders();
 
-      setOrder(data);
+      // 🔎 Debug: see what the API actually returns
+      console.log("ORDERS API RESPONSE:", data);
+
+      if (Array.isArray(data)) {
+        setOrders(data);
+      } else if (data && Array.isArray(data.orders)) {
+        setOrders(data.orders);
+      } else {
+        setOrders([]);
+      }
 
     } catch (err) {
-
-      setError("Order not found");
-
+      console.error("Orders fetch error:", err);
+      setError("Failed to load orders");
     } finally {
-
       setLoading(false);
-
     }
   };
 
-
   useEffect(() => {
-    loadOrder();
-  }, [id]);
-
+    loadOrders();
+  }, []);
 
   if (loading) return <Loading />;
 
   if (error) return <ErrorMessage message={error} />;
 
-
-  const statusClass = `status-${order.status.toLowerCase()}`;
-
-
   return (
     <div className="page-container">
+      <h1 className="page-header">My Orders</h1>
 
-      <h1 className="page-header">Order #{order.id}</h1>
+      <button className="refresh-btn" onClick={loadOrders}>
+        Refresh Orders
+      </button>
 
-      <div className="order-detail">
+      {orders.length === 0 && (
+        <p>No orders yet.</p>
+      )}
 
-        <div className="order-detail-header">
+      <div className="orders-grid">
+        {orders?.map((order, index) => {
+          if (!order) return null;
 
-          <span className={`order-status ${statusClass}`}>
-            {order.status}
-          </span>
+          const orderId = order.id || order.order_id || index;
 
-          <p className="order-date">
-            Placed on {order.createdAt}
-          </p>
-
-        </div>
-
-        <h3>Items</h3>
-
-        <div className="order-items">
-
-          {order.items.map(item => (
-
-            <div key={item.id} className="order-item">
-
-              <span>{item.name}</span>
-
-              <span>
-                {item.quantity} x ${item.price}
-              </span>
-
-            </div>
-
-          ))}
-
-        </div>
-
-        <div className="order-total">
-
-          Total: ${order.total.toFixed(2)}
-
-        </div>
-
-        <button className="refresh-btn" onClick={loadOrder}>
-          Refresh Status
-        </button>
-
+          return (
+            <Link
+              key={orderId}
+              to={`/orders/${orderId}`}
+              className="order-link"
+            >
+              <OrderCard order={order} />
+            </Link>
+          );
+        })}
       </div>
-
     </div>
   );
 }
 
-export default OrderDetailPage;
+export default OrdersPage;
